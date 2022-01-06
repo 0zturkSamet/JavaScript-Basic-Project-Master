@@ -1,0 +1,80 @@
+//Mongo DB esas konu 28.10.2021
+//SORGULAR(QUERYs) https://docs.mongodb.com/manual/reference/operator/query-comparison/
+//adresine bakilabilir.
+
+
+/*
+1)urunler adinda bir veri tabani ve icserisinde "fiyatlar"
+fiyatlar adinda bir collection tanimlayalim
+*/
+
+use("URUNLER")
+db.createCollection("fiyatlar")
+
+
+//2)asagidaki dökümanlari collectiona kaydedip listeleyelim
+
+db.fiyatlar.insertMany([
+{"urunAdi":"TV", "fiyat": 5000, "vergi": 10 ,"summary":[{"version":1},{"show":"yok"}]},
+{"urunAdi":"Telefon", "fiyat": 3500, "vergi": 20 },
+{"urunAdi":"Utu", "fiyat": 1500, "vergi": 5 },
+{"urunAdi":"Buzdolabi", "fiyat": 4000, "vergi": 10 } ] ); 
+
+
+use("URUNLER")
+db.fiyatlar.find()
+
+//3) ilk 2 dökümani sorgula 
+use("URUNLER")
+db.fiyatlar.find().limit(2);
+
+//4)sadece 2. ve 4.dökümanlari sorgula
+use("URUNLER")
+db.fiyatlar.find().skip(1).limit(2);
+
+//5)Birinci dökümani sorgulama
+use("URUNLER")
+db.fiyatlar.find().limit(1);
+
+///=================================================================
+////       LOGICAL QUERY OPERATOR (mantıksal sorgu) ($and ,$or, $not,$nor)
+////
+//// SYNTAX: { $and: [ {ifade1}, {ifade2} , ... , {ifadeN} ] }
+////         { field: { $not: { <operator-ifade> } } }  ==> ( {"vergi": {$not: {$eq:10}}});
+////=================================================================
+
+////-----------------------------------------------------------------
+//// 5) Collection asagidaki dokumani ekleyelim.    
+// ////-----------------------------------------------------------------
+use("URUNLER")
+db.fiyatlar.insertOne({"urunAdi":"Koltuk", "fiyat": 5000, "vergi": 10});
+
+//6) fiyat = 5000 ve urunAdi = TV olan dökümanlari listele
+
+use("URUNLER")
+db.fiyatlar.find({$and:[ {fiyat:5000}, {urunAdi:"TV"}]})
+
+
+
+//8)fiyat = 5000 oan ürünleri listeleyim
+
+//db.fiyatlar.find({fiyat:5000})
+
+db.fiyatlar.find({fiyat:{$eq:5000}})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
